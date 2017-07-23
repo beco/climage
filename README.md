@@ -5,10 +5,27 @@ A toolset to work with images from CLI
 
 ### `merge`
 
+#### use case
+You have just taken a big amount of pictures in the highest possible quality, and you want to merge them by adding **only** the lighten sections,
+
+##### option 1 – Photoshop
+
+You can add each and every image as a layer and then flatten them using the _Lighten merge_.
+- **PROS**: is what the industry uses
+- **CONS**: with more than 5 images you need a supercomputer to just open it, and may take a whole night
+
+##### option 2 – `mege.sh`
+
+You put the images in a specific directory and run `merge.sh`.
+- **CONS**: it is not what the industry uses
+- **PROS**: it takes about 20s to run over 120 26MP images #ftw #fuckPhotoshop
+
+This wrapper works over the ImageMagick limitations of being able to sum _only_ two images at a time.
+
 ### `serialize`
 
 #### use case
-Imagine you have a big stock of images that you need to upload, so you need to watermark them and want to be able to refer to each one uniquely by your clients. This script allows you to uniquely and sequentially sign (watermark) your images with a code and increasing numbers, resulting watermark will be a text at the bottom left corner like:
+You have a big stock of images that you need to upload, so you need to watermark them and want to be able to refer to each one uniquely by your clients. This script allows you to uniquely and sequentially sign (watermark) your images with a code and increasing numbers, resulting watermark will be a text at the bottom left corner like:
 > Alberto Alcocer for ComiCon | code: cc0371
 
 #### usage
