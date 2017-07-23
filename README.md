@@ -25,9 +25,15 @@ This wrapper works over the ImageMagick limitations of being able to sum _only_ 
 ### `serialize`
 
 #### use case
-You have a big stock of images that you need to upload, so you need to watermark them and want to be able to refer to each one uniquely by your clients. This script allows you to uniquely and sequentially sign (watermark) your images with a code and increasing numbers, resulting watermark will be a text at the bottom left corner like:
+You have a big stock of images that you need to upload, so you need to **watermark them** and want to be able to **refer to each one uniquely** by your clients. This script allows you to uniquely and sequentially sign (watermark) as many images as you want with a _code_ and increasing numbers, with just **one command**. So for instance,
+
+`$> serialize.sh -t "Alberto Alcocer for Comicon" -c "cc" -i 300 -d images/`
+
+would taka **all** the `jpg` files from `images/` and add a watermark in the bottom-left part of each image with something like:
 
 > Alberto Alcocer for ComiCon | code: cc0371
+
+Note that the part which says `code: cc0371` will say `code: cc0372` for the **next** image.
 
 
 #### usage
@@ -50,7 +56,7 @@ original|processed
 :-------|:----|
 ![](http://b3co.com/wp-content/uploads/2017/07/IMG_9336.jpg) | ![](http://b3co.com/wp-content/uploads/2017/07/b3co-0136_IMG_9336.jpg)
 filename: path/`IMG_9336.jpg` | filename: path/`signed/b3co-0136_IMG_9336.jpg`
-|**note** that the resulting filename is formed by s\_`number`\_`original_filename`
+**note** that the resulting filename is formed by `code`\_`original_filename`
 
 ## Dependencies
 
