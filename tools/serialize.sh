@@ -69,14 +69,13 @@ then
   exit 1
 fi
 
-printf -v SIG_BASE "   %s | code: %s%%04d" "$SIGN" "$CODE"
-printf "Signing %d images at $DIR with:\n" $TOTAL
-printf "$SIG_BASE" 0
+printf -v SIG_BASE "   %s | code: %%s" "$SIGN"
+printf "Signing %d images at $DIR:\n" $TOTAL
 
 if [ ! -d $DIR/signed ]; then
   mkdir $DIR/signed
 fi
-do=0
+
 printf "saving results in %ssigned\n" "$DIR"
 i=$START
 S=${#SIG_BASE}
@@ -89,8 +88,10 @@ for f in *jpg; do
   H=`echo $D | sed 's/.* \([0-9]\{2,5\}\)x\([0-9]\{2,5\}\) .*/\2/'`
   B=$(($W>$H?$W:$H))
   P=$(((100/72)*($B/$S)))
-  printf -v SIGN_P "$SIG_BASE" $i
-  printf -v RES_FILE "signed/s%s%04d%s%s" "$SEP" "$i" "$SEP" "$f"
+  printf -v CODE_P "%s%04d" "$CODE" "$i"
+  printf -v SIGN_P "$SIG_BASE" "$CODE_P"
+  echo $SIGN_P
+  printf -v RES_FILE "signed/%s%s%s" "$CODE_P" "$SEP" "$f"
   convert $f -font Arial -pointsize $P \
           -draw "gravity southwest \
                  fill black text 0,12 '$SIGN_P' \
