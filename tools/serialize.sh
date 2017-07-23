@@ -87,12 +87,10 @@ for f in *jpg; do
   D=`identify $f`
   W=`echo $D | sed 's/.* \([0-9]\{2,5\}\)x\([0-9]\{2,5\}\) .*/\1/'`
   H=`echo $D | sed 's/.* \([0-9]\{2,5\}\)x\([0-9]\{2,5\}\) .*/\2/'`
-  echo $H
   B=$(($W>$H?$W:$H))
   P=$(((100/72)*($B/$S)))
   printf -v SIGN_P "$SIG_BASE" $i
   printf -v RES_FILE "signed/s%s%04d%s%s" "$SEP" "$i" "$SEP" "$f"
-  echo $RES_FILE
   convert $f -font Arial -pointsize $P \
           -draw "gravity southwest \
                  fill black text 0,12 '$SIGN_P' \
