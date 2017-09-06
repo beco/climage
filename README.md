@@ -8,13 +8,13 @@ A toolset to work with images from CLI
 #### use case
 You have a big stock of images that you need to upload, so you need to **watermark them** and want to be able to **refer to each one uniquely** by your clients. This script allows you to uniquely and sequentially sign (watermark) as many images as you want with a _code_ and increasing numbers, with just **one command**. So for instance,
 
-`$> serialize.sh -t "Alberto Alcocer for ComiCon" -c "cc" -i 300 -d images/`
+`$> serialize.sh -t "Alberto Alcocer for ComiCon" -c "clientA" -i 300 -d images/`
 
 would taka **all** the `jpg` files from `images/` and add a watermark in the bottom-left part of each image with something like:
 
 > Alberto Alcocer for ComiCon | code: cc0371
 
-Note that the part which says `code: cc0371` will say `code: cc0372` for the **next** image.
+Note that the part which says `code: clientA0371` will say `code: clientA0372` for the **next** image.
 
 
 #### usage
@@ -30,6 +30,7 @@ Where flags are:
 - `i`: starting number for the series
 - `d`: directory hosting the **original** files, images there won't be modified, but a new directory `./signed` will be created
 - `c`: code for the series
+- `r`: modifies the default value for resulting size (600px)
 
 **All flags are mandatory.**
 

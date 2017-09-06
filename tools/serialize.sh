@@ -13,6 +13,7 @@
 #        -c "code" – code to be used for the series
 #        -i N – number where de serialize will start, if ommited, will start
 #               at 1
+#        -r N – size of largest side
 #   OUTPUT
 #        A directory under directory/signed will be created an all resulting
 #        images will be stored.
@@ -36,8 +37,9 @@ type convert >/dev/null 2>&1 || {
 t=$(date +"%s")
 
 START=1
+SIZE=600
 
-while getopts ":t:c:i:d:" opt; do
+while getopts ":t:c:i:d:r:" opt; do
   case $opt in
     c)
       CODE=$OPTARG
@@ -50,6 +52,9 @@ while getopts ":t:c:i:d:" opt; do
       ;;
     d)
       DIR=$OPTARG
+      ;;
+    r)
+      SIZE=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -76,27 +81,27 @@ if [ ! -d $DIR/signed ]; then
   mkdir $DIR/signed
 fi
 
-printf "saving results in %ssigned\n" "$DIR"
+printf "saving results in %s/signed\n" "$DIR"
 i=$START
 S=${#SIG_BASE}
 
 pushd $DIR > /dev/null
+printf -v SIZE "%sx%s" $SIZE $SIZE
 SEP="_"
 for f in *jpg; do
   D=`identify $f`
   W=`echo $D | sed 's/.* \([0-9]\{2,5\}\)x\([0-9]\{2,5\}\) .*/\1/'`
   H=`echo $D | sed 's/.* \([0-9]\{2,5\}\)x\([0-9]\{2,5\}\) .*/\2/'`
-  B=$(($W>$H?$W:$H))
+  B=$(($W > $H? $W:$H))
   P=$(((100/72)*($B/$S)))
   printf -v CODE_P "%s%04d" "$CODE" "$i"
   printf -v SIGN_P "$SIG_BASE" "$CODE_P"
-  echo $SIGN_P
   printf -v RES_FILE "signed/%s%s%s" "$CODE_P" "$SEP" "$f"
   convert $f -font Arial -pointsize $P \
           -draw "gravity southwest \
                  fill black text 0,12 '$SIGN_P' \
                  fill white text 1,11 '$SIGN_P' " \
-          $RES_FILE
+          -resize $SIZE\> $RES_FILE
   echo " - $f: signed"
   i=$(($i + 1))
 done
